@@ -1,0 +1,52 @@
+﻿<Window x:Class="DataGridControl.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:view="clr-namespace:DataGridControl.View"
+        xmlns:behaviors="clr-namespace:DataGridControl.Behaviors"
+        mc:Ignorable="d"
+        Title="Spreadsheet with Undo/Redo" Height="450" Width="600">
+    <Window.InputBindings>
+        <KeyBinding Key="N" Modifiers="Ctrl"
+                    Command="{Binding AddRowCommand}" />
+        <KeyBinding Key="Delete" Modifiers="Shift"
+                    Command="{Binding DeleteRowsCommand}" />
+        <KeyBinding Key="Z" Modifiers="Control"
+                    Command="{Binding UndoCommand}" />
+        <KeyBinding Key="Y" Modifiers="Control"
+                    Command="{Binding RedoCommand}" />
+    </Window.InputBindings>
+    <Window.DataContext>
+        <view:SpreadsheetViewModel />
+    </Window.DataContext>
+    <DockPanel>
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar>
+                <Button Command="{Binding AddRowCommand}" Content="Добавить строку" />
+                <Separator />
+                <Button Command="{Binding DeleteRowsCommand}" Content="Удалить строку" />
+                <Separator />
+                <Button Command="{Binding UndoCommand}" Content="Отменить (Ctrl+Z)" />
+                <Separator />
+                <Button Command="{Binding RedoCommand}" Content="Повторить (Ctrl+Y)" />
+            </ToolBar>
+        </ToolBarTray>
+        <DataGrid ItemsSource="{Binding Rows}" 
+                  AutoGenerateColumns="False" 
+                  CanUserAddRows="False"
+                  CanUserDeleteRows="False"
+                  SelectionMode="Extended"
+                  >
+            <i:Interaction.Behaviors>
+                <behaviors:DataGridSelectedItemsBehavior SelectedItems="{Binding SelectedRows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </i:Interaction.Behaviors>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Колонка 1" Binding="{Binding Col1, UpdateSourceTrigger=LostFocus}" Width="*"/>
+                <DataGridTextColumn Header="Колонка 2" Binding="{Binding Col2, UpdateSourceTrigger=LostFocus}" Width="*"/>
+                <DataGridTextColumn Header="Колонка 3" Binding="{Binding Col3, UpdateSourceTrigger=LostFocus}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</Window>
