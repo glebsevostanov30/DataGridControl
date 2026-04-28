@@ -1,7 +1,7 @@
 ﻿using DataGridControl.Model;
 using DataGridControl.View;
 
-namespace DataGridControl.Command;
+namespace DataGridControl.Command.Cell;
 
 public class ChangePropertyCommand(
     SpreadsheetViewModel vm,

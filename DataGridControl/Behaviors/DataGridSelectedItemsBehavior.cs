@@ -9,7 +9,9 @@ namespace DataGridControl.Behaviors;
 public class DataGridSelectedItemsBehavior : Behavior<DataGrid>
 {
     public static readonly DependencyProperty SelectedItemsProperty =
-        DependencyProperty.Register(nameof(SelectedItems), typeof(IList),
+        DependencyProperty.Register(
+            nameof(SelectedItems),
+            typeof(IList),
             typeof(DataGridSelectedItemsBehavior),
             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                 OnSelectedItemsChanged));
@@ -35,10 +37,10 @@ public class DataGridSelectedItemsBehavior : Behavior<DataGrid>
     private static void OnSelectedItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
     {
         if (d is not DataGridSelectedItemsBehavior { AssociatedObject: not null } behavior) return;
-        
+
         if (args.OldValue is INotifyCollectionChanged oldCollection)
             oldCollection.CollectionChanged -= behavior.OnSourceCollectionChanged;
-        
+
         if (args.NewValue is INotifyCollectionChanged newCollection)
             newCollection.CollectionChanged += behavior.OnSourceCollectionChanged;
     }

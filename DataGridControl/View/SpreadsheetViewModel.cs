@@ -1,9 +1,11 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Controls;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using DataGridControl.Command;
+using DataGridControl.Command.Row;
 using DataGridControl.Model;
 
 namespace DataGridControl.View;
@@ -13,6 +15,7 @@ public partial class SpreadsheetViewModel : INotifyPropertyChanged
     public ObservableCollection<RowData> Rows { get; }
     private readonly Stack<IList<IUndoRedoCommand>> _undoStack = new();
     private readonly Stack<IList<IUndoRedoCommand>> _redoStack = new();
+     
 
     public bool IsUndoRedoInProgress
     {
@@ -32,8 +35,22 @@ public partial class SpreadsheetViewModel : INotifyPropertyChanged
         {
             field = value;
             OnPropertyChanged();
+            CommandManager.InvalidateRequerySuggested();
         }
     } = [];
+    
+    public ObservableCollection<DataGridColumn> SelectedColumns
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = [];
+    
+    private bool IsNotUndoRedoInProgress => !IsUndoRedoInProgress;
+    private bool IsSelected => SelectedColumns.Count > 0;
 
     public SpreadsheetViewModel()
     {
@@ -50,17 +67,16 @@ public partial class SpreadsheetViewModel : INotifyPropertyChanged
     }
 
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(IsNotUndoRedoInProgress))]
     private void AddRow()
     {
         var newRow = new RowData { Col1 = "", Col2 = "", Col3 = "" };
         var command = new AddRowCommand(this, newRow, Rows.Count);
         ExecuteCommand(new List<IUndoRedoCommand> { command });
-        // Применяем сразу Redo, чтобы добавить строку
         command.Redo();
     }
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(IsSelected))]
     private void DeleteRows()
     {
         var itemsToDelete = SelectedRows.ToList();
@@ -71,14 +87,10 @@ public partial class SpreadsheetViewModel : INotifyPropertyChanged
             var index = Rows.IndexOf(item);
             var command = new DeleteRowCommand(this, item, index);
             commands.Add(command);
+            command.Redo();
         }
 
         ExecuteCommand(commands);
-
-        foreach (var command in commands)
-        {
-            command.Redo();
-        }
 
         SelectedRows.Clear();
     }
