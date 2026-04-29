@@ -15,7 +15,7 @@ public partial class SpreadsheetViewModel : INotifyPropertyChanged
     public ObservableCollection<RowData> Rows { get; }
     private readonly Stack<IList<IUndoRedoCommand>> _undoStack = new();
     private readonly Stack<IList<IUndoRedoCommand>> _redoStack = new();
-     
+    
 
     public bool IsUndoRedoInProgress
     {
@@ -48,9 +48,6 @@ public partial class SpreadsheetViewModel : INotifyPropertyChanged
             OnPropertyChanged();
         }
     } = [];
-    
-    private bool IsNotUndoRedoInProgress => !IsUndoRedoInProgress;
-    private bool IsSelected => SelectedColumns.Count > 0;
 
     public SpreadsheetViewModel()
     {
@@ -67,16 +64,17 @@ public partial class SpreadsheetViewModel : INotifyPropertyChanged
     }
 
 
-    [RelayCommand(CanExecute = nameof(IsNotUndoRedoInProgress))]
+    [RelayCommand]
     private void AddRow()
     {
         var newRow = new RowData { Col1 = "", Col2 = "", Col3 = "" };
         var command = new AddRowCommand(this, newRow, Rows.Count);
         ExecuteCommand(new List<IUndoRedoCommand> { command });
+        // Применяем сразу Redo, чтобы добавить строку
         command.Redo();
     }
 
-    [RelayCommand(CanExecute = nameof(IsSelected))]
+    [RelayCommand]
     private void DeleteRows()
     {
         var itemsToDelete = SelectedRows.ToList();

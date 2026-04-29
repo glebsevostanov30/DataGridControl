@@ -2,6 +2,7 @@
 using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
+using Microsoft.VisualBasic;
 using Microsoft.Xaml.Behaviors;
 
 namespace DataGridControl.Behaviors;
@@ -16,7 +17,7 @@ public class DataGridSelectedItemsBehavior : Behavior<DataGrid>
             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                 OnSelectedItemsChanged));
 
-    public IList SelectedItems
+    public IList? SelectedItems
     {
         get => (IList)GetValue(SelectedItemsProperty);
         set => SetValue(SelectedItemsProperty, value);
@@ -47,7 +48,7 @@ public class DataGridSelectedItemsBehavior : Behavior<DataGrid>
 
     private void OnDataGridSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        var selectedItems = SelectedItems;
+        var selectedItems = SelectedItems ?? new Collection();
 
         foreach (var item in e.RemovedItems) selectedItems.Remove(item);
         foreach (var item in e.AddedItems) selectedItems.Add(item);

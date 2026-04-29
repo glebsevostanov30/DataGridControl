@@ -41,7 +41,6 @@
                   
                   >
             <i:Interaction.Behaviors>
-                <behaviors:DataGridColumnsBehavior BindableColumns="{Binding SelectedColumns, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <behaviors:DataGridSelectedItemsBehavior SelectedItems="{Binding SelectedRows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </i:Interaction.Behaviors>
             <DataGrid.Columns>
