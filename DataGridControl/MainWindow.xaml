@@ -33,15 +33,14 @@
                 <Button Command="{Binding RedoCommand}" Content="Повторить (Ctrl+Y)" />
             </ToolBar>
         </ToolBarTray>
-        <DataGrid ItemsSource="{Binding Rows}" 
+        <DataGrid ItemsSource="{Binding model.Rows}" 
                   AutoGenerateColumns="False" 
                   CanUserAddRows="False"
                   CanUserDeleteRows="False"
                   SelectionMode="Extended"
-                  
                   >
             <i:Interaction.Behaviors>
-                <behaviors:DataGridSelectedItemsBehavior SelectedItems="{Binding SelectedRows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <behaviors:DataGridSelectedItemsBehavior SelectedItems="{Binding model.SelectedRows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </i:Interaction.Behaviors>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Колонка 1" Binding="{Binding Col1, UpdateSourceTrigger=LostFocus}" Width="*"/>

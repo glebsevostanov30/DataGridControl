@@ -4,7 +4,7 @@ using DataGridControl.View;
 namespace DataGridControl.Command.Cell;
 
 public class ChangePropertyCommand(
-    SpreadsheetViewModel vm,
+    SpreadsheetModel vm,
     RowData target,
     string propertyName,
     object oldValue,

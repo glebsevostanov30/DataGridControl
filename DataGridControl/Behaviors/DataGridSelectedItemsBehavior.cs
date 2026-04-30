@@ -48,10 +48,9 @@ public class DataGridSelectedItemsBehavior : Behavior<DataGrid>
 
     private void OnDataGridSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        var selectedItems = SelectedItems ?? new Collection();
-
-        foreach (var item in e.RemovedItems) selectedItems.Remove(item);
-        foreach (var item in e.AddedItems) selectedItems.Add(item);
+        foreach (var item in e.RemovedItems) SelectedItems?.Remove(item);
+        foreach (var item in e.AddedItems) SelectedItems?.Add(item);
+        
     }
 
     private void OnSourceCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)

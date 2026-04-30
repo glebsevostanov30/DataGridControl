@@ -3,7 +3,7 @@ using DataGridControl.View;
 
 namespace DataGridControl.Command.Row;
 
-public class AddRowCommand(SpreadsheetViewModel vm,
+public class AddRowCommand(SpreadsheetModel vm,
     RowData newRow,
     int index)
     : IUndoRedoCommand

@@ -4,7 +4,7 @@ using DataGridControl.View;
 
 namespace DataGridControl.Command.Row;
 
-public class DeleteRowCommand(SpreadsheetViewModel vm,
+public class DeleteRowCommand(SpreadsheetModel vm,
     RowData deletedRow,
     int index)
     : IUndoRedoCommand
