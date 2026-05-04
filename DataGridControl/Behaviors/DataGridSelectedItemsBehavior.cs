@@ -9,18 +9,18 @@ namespace DataGridControl.Behaviors;
 
 public class DataGridSelectedItemsBehavior : Behavior<DataGrid>
 {
-    public static readonly DependencyProperty SelectedItemsProperty =
+    public static readonly DependencyProperty SelectedRowsProperty =
         DependencyProperty.Register(
-            nameof(SelectedItems),
+            nameof(SelectedRows),
             typeof(IList),
             typeof(DataGridSelectedItemsBehavior),
             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
                 OnSelectedItemsChanged));
 
-    public IList? SelectedItems
+    public IList? SelectedRows
     {
-        get => (IList)GetValue(SelectedItemsProperty);
-        set => SetValue(SelectedItemsProperty, value);
+        get => (IList)GetValue(SelectedRowsProperty);
+        set => SetValue(SelectedRowsProperty, value);
     }
 
     protected override void OnAttached()
@@ -48,9 +48,8 @@ public class DataGridSelectedItemsBehavior : Behavior<DataGrid>
 
     private void OnDataGridSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        foreach (var item in e.RemovedItems) SelectedItems?.Remove(item);
-        foreach (var item in e.AddedItems) SelectedItems?.Add(item);
-        
+        foreach (var item in e.RemovedItems) SelectedRows?.Remove(item);
+        foreach (var item in e.AddedItems) SelectedRows?.Add(item);
     }
 
     private void OnSourceCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)

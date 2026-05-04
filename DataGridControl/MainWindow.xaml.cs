@@ -11,4 +11,12 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
     }
+
+
+    private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+    {
+        var asdf = MainDataGrid.SelectedItems;
+        var asdf1 = MainDataGrid.CurrentColumn;
+        Console.WriteLine("asdf");
+    }
 }

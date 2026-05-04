@@ -6,10 +6,11 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:view="clr-namespace:DataGridControl.View"
         xmlns:behaviors="clr-namespace:DataGridControl.Behaviors"
+        xmlns:dgx="clr-namespace:DataGridExtensions;assembly=DataGridExtensions"
         mc:Ignorable="d"
         Title="Spreadsheet with Undo/Redo" Height="450" Width="600">
     <Window.InputBindings>
-        <KeyBinding Key="N" Modifiers="Ctrl"
+        <KeyBinding Key="N" Modifiers="Control"
                     Command="{Binding AddRowCommand}" />
         <KeyBinding Key="Delete" Modifiers="Shift"
                     Command="{Binding DeleteRowsCommand}" />
@@ -24,29 +25,56 @@
     <DockPanel>
         <ToolBarTray DockPanel.Dock="Top">
             <ToolBar>
-                <Button Command="{Binding AddRowCommand}" Content="Добавить строку" />
-                <Separator />
-                <Button Command="{Binding DeleteRowsCommand}" Content="Удалить строку" />
-                <Separator />
                 <Button Command="{Binding UndoCommand}" Content="Отменить (Ctrl+Z)" />
                 <Separator />
                 <Button Command="{Binding RedoCommand}" Content="Повторить (Ctrl+Y)" />
             </ToolBar>
         </ToolBarTray>
-        <DataGrid ItemsSource="{Binding model.Rows}" 
-                  AutoGenerateColumns="False" 
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar>
+                <Button Command="{Binding AddColumnCommand}" Content="Добавить столбец" />
+                <Separator />
+                <Button Command="{Binding DeleteColumnsCommand}" Content="Удалить столбец" />
+                <Separator />
+                <Button Command="{Binding ChooseColumnCommand}" Content="Выбрать столбцы" />
+            </ToolBar>
+        </ToolBarTray>
+        <ToolBarTray DockPanel.Dock="Top">
+            <ToolBar>
+                <Button Command="{Binding AddRowCommand}" Content="Добавить строку" />
+                <Separator />
+                <Button Command="{Binding DeleteRowsCommand}" Content="Удалить строку" />
+            </ToolBar>
+        </ToolBarTray>
+        <Button DockPanel.Dock="Bottom" Click="ButtonBase_OnClick" Height="200" Width="200" />
+        <DataGrid x:Name="MainDataGrid"
+                  ItemsSource="{Binding model.Rows}"
+                  AutoGenerateColumns="False"
                   CanUserAddRows="False"
                   CanUserDeleteRows="False"
                   SelectionMode="Extended"
+                  SelectionUnit="FullRow"
                   >
             <i:Interaction.Behaviors>
-                <behaviors:DataGridSelectedItemsBehavior SelectedItems="{Binding model.SelectedRows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <behaviors:DataGridSelectedItemsBehavior
+                    SelectedRows="{Binding model.SelectedRows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <behaviors:DataGridColumnsBehavior
+                    Columns="{Binding model.Columns, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </i:Interaction.Behaviors>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Колонка 1" Binding="{Binding Col1, UpdateSourceTrigger=LostFocus}" Width="*"/>
-                <DataGridTextColumn Header="Колонка 2" Binding="{Binding Col2, UpdateSourceTrigger=LostFocus}" Width="*"/>
-                <DataGridTextColumn Header="Колонка 3" Binding="{Binding Col3, UpdateSourceTrigger=LostFocus}" Width="*"/>
+                <DataGridTextColumn Header="Колонка 1" Binding="{Binding Col1, UpdateSourceTrigger=LostFocus}"
+                                    Width="*" />
+                <DataGridTextColumn Header="Колонка 2" Binding="{Binding Col2, UpdateSourceTrigger=LostFocus}"
+                                    Width="*" />
+                <DataGridTextColumn Header="Колонка 3" Binding="{Binding Col3, UpdateSourceTrigger=LostFocus}"
+                                    Width="*" />
             </DataGrid.Columns>
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Скрыть"
+                              Command="{Binding HiddenCommand}" />
+                </ContextMenu>
+            </DataGrid.ContextMenu>
         </DataGrid>
     </DockPanel>
 </Window>

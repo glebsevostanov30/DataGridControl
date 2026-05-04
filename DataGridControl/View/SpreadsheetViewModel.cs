@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using DataGridControl.Command.Row;
+using DataGridControl.Dialog;
 using DataGridControl.Model;
 using DataGridControl.Service;
 
@@ -9,6 +10,12 @@ public partial class SpreadsheetViewModel
 {
     public SpreadsheetModel model { get; } = new();
     private readonly CommandHistory _history = CommandHistory.instance;
+    private readonly SelectionColumnsDialog _selectionColumnsDialog;
+
+    public SpreadsheetViewModel()
+    {
+        _selectionColumnsDialog = new SelectionColumnsDialog(model);
+    }
 
     [RelayCommand]
     private void AddRow()
@@ -28,6 +35,27 @@ public partial class SpreadsheetViewModel
 
         _history.ExecuteGroup(commands, "Удаление нескольких строк");
         model.SelectedRows.Clear();
+    }
+
+    [RelayCommand]
+    private void AddColumn()
+    {
+    }
+
+    [RelayCommand]
+    private void Hidden()
+    {
+    }
+
+    [RelayCommand]
+    private void ChooseColumn()
+    {
+        _selectionColumnsDialog.Show();
+    }
+
+    [RelayCommand]
+    private void DeleteColumns()
+    {
     }
 
     [RelayCommand]
