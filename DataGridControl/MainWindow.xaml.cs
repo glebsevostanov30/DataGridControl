@@ -16,8 +16,6 @@ public partial class MainWindow : Window
         InitializeComponent();
         var spreadsheetViewModel = new SpreadsheetViewModel();
         DataContext = spreadsheetViewModel;
-        MainDataGrid.BindToDataGrid(spreadsheetViewModel.model);
-        spreadsheetViewModel.model.Columns.CollectionChanged += MainDataGrid.BindToDataGrid;
     }
 
     private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
