@@ -1,26 +1,32 @@
-﻿using DataGridControl.Model;
+﻿using System.Data;
+using DataGridControl.Model.Test;
 using DataGridControl.View;
 
 namespace DataGridControl.Command.Row;
 
-public class AddRowCommand(SpreadsheetModel vm,
-    RowData newRow,
-    int index)
+public class AddRowCommand(
+    VeiwModel vm, 
+    // RowRecord row
+    DataRow row
+    )
     : IUndoRedoCommand
 {
-    public string Description => $"Добавление строки в позицию {index}";
+    public string Description => $"Добавление строки в позицию {row}";
 
     public void Undo()
     {
-        vm.IsUndoRedoInProgress = true;
-        vm.Rows.RemoveAt(index);
-        vm.IsUndoRedoInProgress = false;
+        // vm.Rows.Remove(row);
+        // vm.DeleteRow(row.Id);
+        // vm.IsUndoRedoInProgress = true;
+        // vm.RemoveRow(_row);
+        // vm.IsUndoRedoInProgress = false;
     }
 
     public void Redo()
     {
-        vm.IsUndoRedoInProgress = true;
-        vm.Rows.Insert(index, newRow);
-        vm.IsUndoRedoInProgress = false;
+        vm.AddRow(vm.TableData, null);
+        // vm.IsUndoRedoInProgress = true;
+        // vm.AddRow(row.Id, row.Values);
+        // vm.IsUndoRedoInProgress = false;
     }
 }

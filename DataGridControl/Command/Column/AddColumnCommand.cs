@@ -1,28 +1,34 @@
-﻿using System.Windows;
-using System.Windows.Controls;
-using DataGridControl.Model;
+﻿using System.Data;
+using DataGridControl.Model.Test;
 using DataGridControl.View;
 
 namespace DataGridControl.Command.Column;
 
-public class AddColumnCommand(SpreadsheetModel vm,
-    DataGridColumn dataGridColumn,
-    int index)
+public class AddColumnCommand(
+    VeiwModel vm, 
+    // DataTable vm,
+    DataColumn column)
     : IUndoRedoCommand
 {
-    public string Description => $"Добавление колонки в позицию {index}";
+    public string Description => $"Добавление колонки в позицию {column}";
 
     public void Undo()
     {
-        vm.IsUndoRedoInProgress = true;
-        dataGridColumn.Visibility = Visibility.Hidden;
-        vm.IsUndoRedoInProgress = false;
+        // vm.Columns.Remove(column);
+        // vm.IsUndoRedoInProgress = true;
+        // vm.DeleteColumn(column.Id);
+        // dataGridColumn.Visibility = Visibility.Hidden;
+        // vm.IsUndoRedoInProgress = false;
     }
 
     public void Redo()
     {
-        vm.IsUndoRedoInProgress = true;
-        dataGridColumn.Visibility = Visibility.Visible;
-        vm.IsUndoRedoInProgress = false;
+        var asdf = vm.TableData.Copy();
+        vm.AddColumn<string>(column.ColumnName, asdf);
+        // vm.Columns.Add(column);
+        // vm.IsUndoRedoInProgress = true;
+        // vm.AddColumn(column.Id, column.Header);
+        // dataGridColumn.Visibility = Visibility.Visible;
+        // vm.IsUndoRedoInProgress = false;
     }
 }

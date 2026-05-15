@@ -1,29 +1,25 @@
-﻿using DataGridControl.Command;
-using DataGridControl.Model;
-using DataGridControl.View;
-
-namespace DataGridControl.Command.Row;
-
-public class DeleteRowCommand(SpreadsheetModel vm,
-    RowData deletedRow,
-    int index)
-    : IUndoRedoCommand
-{
-    private readonly RowData _deletedRow = deletedRow.Clone();
-
-    public string Description => $"Удаление строки в позиции {index}";
-
-    public void Undo()
-    {
-        vm.IsUndoRedoInProgress = true;
-        vm.Rows.Insert(index, _deletedRow.Clone());
-        vm.IsUndoRedoInProgress = false;
-    }
-
-    public void Redo()
-    {
-        vm.IsUndoRedoInProgress = true;
-        vm.Rows.RemoveAt(index);
-        vm.IsUndoRedoInProgress = false;
-    }
-}
+﻿// using DataGridControl.Model;
+//
+// namespace DataGridControl.Command.Row;
+//
+// public class DeleteRowCommand(
+//     SpreadsheetModel vm,
+//     RowRecord rowRecord)
+//     : IUndoRedoCommand
+// {
+//     public string Description => $"Удаление строки в позиции {rowRecord.Id}";
+//
+//     public void Undo()
+//     {
+//         vm.IsUndoRedoInProgress = true;
+//         vm.AddRow(rowRecord.Id, rowRecord.Values);
+//         vm.IsUndoRedoInProgress = false;
+//     }
+//
+//     public void Redo()
+//     {
+//         vm.IsUndoRedoInProgress = true;
+//         vm.DeleteRow(rowRecord.Id);
+//         vm.IsUndoRedoInProgress = false;
+//     }
+// }

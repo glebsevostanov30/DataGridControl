@@ -1,69 +1,42 @@
-﻿using System.Collections;
-using System.Collections.Specialized;
-using System.Windows;
-using System.Windows.Controls;
-using Microsoft.VisualBasic;
-using Microsoft.Xaml.Behaviors;
-
-namespace DataGridControl.Behaviors;
-
-public class DataGridSelectedItemsBehavior : Behavior<DataGrid>
-{
-    public static readonly DependencyProperty SelectedRowsProperty =
-        DependencyProperty.Register(
-            nameof(SelectedRows),
-            typeof(IList),
-            typeof(DataGridSelectedItemsBehavior),
-            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
-                OnSelectedItemsChanged));
-
-    public IList? SelectedRows
-    {
-        get => (IList)GetValue(SelectedRowsProperty);
-        set => SetValue(SelectedRowsProperty, value);
-    }
-
-    protected override void OnAttached()
-    {
-        base.OnAttached();
-        AssociatedObject.SelectionChanged += OnDataGridSelectionChanged;
-    }
-
-    protected override void OnDetaching()
-    {
-        base.OnDetaching();
-        AssociatedObject.SelectionChanged -= OnDataGridSelectionChanged;
-    }
-
-    private static void OnSelectedItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
-    {
-        if (d is not DataGridSelectedItemsBehavior { AssociatedObject: not null } behavior) return;
-
-        if (args.OldValue is INotifyCollectionChanged oldCollection)
-            oldCollection.CollectionChanged -= behavior.OnSourceCollectionChanged;
-
-        if (args.NewValue is INotifyCollectionChanged newCollection)
-            newCollection.CollectionChanged += behavior.OnSourceCollectionChanged;
-    }
-
-    private void OnDataGridSelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        foreach (var item in e.RemovedItems) SelectedRows?.Remove(item);
-        foreach (var item in e.AddedItems) SelectedRows?.Add(item);
-    }
-
-    private void OnSourceCollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        var dataGrid = AssociatedObject;
-        if (dataGrid == null) return;
-
-        if (e.OldItems != null)
-            foreach (var item in e.OldItems)
-                dataGrid.SelectedItems.Remove(item);
-        if (e.NewItems == null) return;
-        {
-            foreach (var item in e.NewItems)
-                dataGrid.SelectedItems.Add(item);
-        }
-    }
-}
+﻿// using System.Collections.ObjectModel;
+// using System.Windows;
+// using System.Windows.Controls;
+// using DataGridControl.Model;
+// using Microsoft.Xaml.Behaviors;
+//
+// namespace DataGridControl.Behaviors;
+//
+// public class DataGridSelectedItemsBehavior : Behavior<DataGrid>
+// {
+//     public static readonly DependencyProperty SelectedRowsProperty =
+//         DependencyProperty.Register(
+//             nameof(SelectedRows),
+//             typeof(ObservableCollection<RowRecord>),
+//             typeof(DataGridSelectedItemsBehavior),
+//             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+//
+//     public ObservableCollection<RowRecord> SelectedRows
+//     {
+//         get => (ObservableCollection<RowRecord>)GetValue(SelectedRowsProperty);
+//         set => SetValue(SelectedRowsProperty, value);
+//     }
+//
+//     protected override void OnAttached()
+//     {
+//         base.OnAttached();
+//         AssociatedObject.SelectionChanged += OnDataGridSelectionChanged;
+//     }
+//
+//     protected override void OnDetaching()
+//     {
+//         base.OnDetaching();
+//         AssociatedObject.SelectionChanged -= OnDataGridSelectionChanged;
+//     }
+//
+//     private void OnDataGridSelectionChanged(object sender, SelectionChangedEventArgs e)
+//     {
+//         foreach (RowRecord item in e.RemovedItems) SelectedRows?.Remove(item);
+//         foreach (RowRecord item in e.AddedItems) SelectedRows?.Add(item);
+//     }
+//     
+// }

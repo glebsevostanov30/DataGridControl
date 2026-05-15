@@ -7,10 +7,10 @@ namespace DataGridControl.Dialog
 {
     public partial class SelectionColumnsDialog : Window
     {
-        public SelectionColumnsDialog(SpreadsheetModel mainModel)
+        public SelectionColumnsDialog()
         {
             InitializeComponent();
-            DataContext = new SelectionColumnsDialogViewModel(mainModel);
+            DataContext = new SelectionColumnsDialogViewModel();
         }
 
         private void ButtonBaseOk_OnClick(object sender, RoutedEventArgs e)

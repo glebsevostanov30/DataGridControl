@@ -55,12 +55,12 @@
                  SelectionMode="Extended"
                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                  Margin="0,0,0,10"
-                 ItemsSource="{Binding mainModel.Columns}">
+                 ItemsSource="{Binding mainModel.DataTable.Columns}">
 
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <CheckBox Content="{Binding Header}"
-                              IsChecked="{Binding Visibility, Mode=TwoWay, Converter={StaticResource VisibilityToBoolConverter}}"
+                    <CheckBox Content="{Binding ColumnName}"
+                              
                               VerticalAlignment="Center"
                               Command="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.ChooseCommand}"
                               CommandParameter="{Binding}"/>
