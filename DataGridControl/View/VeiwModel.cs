@@ -6,7 +6,7 @@ namespace DataGridControl.View;
 
 public class VeiwModel: INotifyPropertyChanged
 {
-    public DataTable TableData { get; set; }
+    public DataTable TableData { get; set; } = new DataTable();
 
     public VeiwModel()
     {
@@ -16,7 +16,7 @@ public class VeiwModel: INotifyPropertyChanged
         AddColumn<string>("Username", changedTable);
         AddColumn<string>("Mail", changedTable);
         
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < 34; i++)
         {
             AddColumn<string>(i.ToString(), changedTable);
         }
@@ -34,21 +34,22 @@ public class VeiwModel: INotifyPropertyChanged
     public void AddColumn<TData>(string columnName, DataTable targetDataTable, int columnIndex = -1)
     {
         var newColumn = new DataColumn(columnName, typeof(TData));
-
+        
         targetDataTable.Columns.Add(newColumn);
         if (columnIndex > -1)
         {
             newColumn.SetOrdinal(columnIndex);
         }
-
+        
         var newColumnIndex = targetDataTable.Columns.IndexOf(newColumn);
-
+        
         // Initialize existing rows with default value for the new column
         foreach (DataRow row in targetDataTable.Rows)
         {
             row[newColumnIndex] = default(TData);
         }
-        
+
+        TableData = targetDataTable;
         OnPropertyChanged(nameof(TableData));
     }
 
@@ -58,10 +59,10 @@ public class VeiwModel: INotifyPropertyChanged
         targetDataTable.Rows.Add(rowModelWithCurrentColumns);
 
         if (columnValues == null) return;
-        if (columnValues.Length != targetDataTable.Columns.Count) return;
         
         for (var columnIndex = 0; columnIndex < targetDataTable.Columns.Count; columnIndex++)
         {
+            if(columnValues.Length - 1 < columnIndex) break;
             rowModelWithCurrentColumns[columnIndex] = columnValues[columnIndex];
         }
     }
