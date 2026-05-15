@@ -20,7 +20,7 @@ public class VeiwModel: INotifyPropertyChanged
         {
             AddColumn<string>(i.ToString(), changedTable);
         }
-
+        
         
         for (int i = 0; i < 10_000; i++)
         {

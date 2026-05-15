@@ -45,7 +45,7 @@
         </ToolBarTray>
         <Button DockPanel.Dock="Bottom" Click="ButtonBase_OnClick" Height="200" Width="200" />
         <DataGrid x:Name="MainDataGrid"
-                  ItemsSource="{Binding veiw.TableData}"
+                  ItemsSource="{Binding veiw.TableData.DefaultView}"
                   AutoGenerateColumns="True"
                   CanUserAddRows="False"
                   CanUserDeleteRows="False"

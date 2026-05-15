@@ -13,7 +13,6 @@ namespace DataGridControl.View;
 public partial class SpreadsheetViewModel
 {
     public DynamicTable model { get; } = new();
-    public DataTable dataTable { get; } = new();
     public VeiwModel veiw { get; } = new();
     private readonly CommandHistory _history = CommandHistory.instance;
     private readonly SelectionColumnsDialog _selectionColumnsDialog;
@@ -23,76 +22,75 @@ public partial class SpreadsheetViewModel
 
     public SpreadsheetViewModel()
     {
-        dataTable.Columns.Add(new DataColumn("Первая колонка"));
-        dataTable.Columns.Add(new DataColumn("Вторая колонка"));
-        dataTable.Columns.Add(new DataColumn("Третья колонка"));
-
-        var asdf = dataTable.NewRow();
-        asdf["Первая колонка"] = "a1";
-        asdf["Вторая колонка"] = "b1";
-        asdf["Третья колонка"] = "c1";
-        dataTable.Rows.Add(asdf);
-        
-        var asdf1 = dataTable.NewRow();
-        asdf["Первая колонка"] = "a2";
-        asdf["Вторая колонка"] = "b2";
-        asdf["Третья колонка"] = "c2";
-        dataTable.Rows.Add(asdf1);
-        
-        var asdf2 = dataTable.NewRow();
-        asdf["Первая колонка"] = "a3";
-        asdf["Вторая колонка"] = "b3";
-        asdf["Третья колонка"] = "c3";
-        dataTable.Rows.Add(asdf2);
-        
-        model.Columns.Add(new ColumnDescriptor
-        {
-            Id = "1",
-            Header = "Первая колонка"
-        });
-
-        model.Columns.Add(new ColumnDescriptor
-        {
-            Id = "2",
-            Header = "Вторая колонка"
-        });
-
-        model.Columns.Add(new ColumnDescriptor
-        {
-            Id = "3",
-            Header = "Третья колонка"
-        });
-
-        model.Rows.Add(new RowRecord
-        {
-            Id = Guid.NewGuid().ToString(),
-            Values =
-            [
-                "a1", "b1", "c1"
-            ]
-        });
-
-        model.Rows.Add(new RowRecord
-        {
-            Id = Guid.NewGuid().ToString(),
-            Values =
-            [
-                "a2", "b2", "c2"
-            ]
-        });
-
-        model.Rows.Add(new RowRecord
-        {
-            Id = Guid.NewGuid().ToString(),
-            Values =
-            [
-                "a3", "b3", "c3"
-            ]
-        });
-
-
-        RowsView = CollectionViewSource.GetDefaultView(model.Rows);
-        RowsView.Filter = obj => ((RowRecord)obj).IsVisible;
+        // for (int i = 0; i < 100; i++)
+        // {
+        //     model.Columns.Add(new ColumnDescriptor
+        //     {
+        //         Id = "1",
+        //         Header = "Первая колонка"
+        //     });
+        // }
+        //
+        //
+        // for (int i = 0; i < 10_000; i++)
+        // {
+        //     model.Rows.Add(new RowRecord
+        //     {
+        //         Id = Guid.NewGuid().ToString(),
+        //         Values =
+        //         [
+        //         ]
+        //     });
+        // }
+        //
+        // model.Columns.Add(new ColumnDescriptor
+        // {
+        //     Id = "1",
+        //     Header = "Первая колонка"
+        // });
+        //
+        // model.Columns.Add(new ColumnDescriptor
+        // {
+        //     Id = "2",
+        //     Header = "Вторая колонка"
+        // });
+        //
+        // model.Columns.Add(new ColumnDescriptor
+        // {
+        //     Id = "3",
+        //     Header = "Третья колонка"
+        // });
+        //
+        // model.Rows.Add(new RowRecord
+        // {
+        //     Id = Guid.NewGuid().ToString(),
+        //     Values =
+        //     [
+        //         "a1", "b1", "c1"
+        //     ]
+        // });
+        //
+        // model.Rows.Add(new RowRecord
+        // {
+        //     Id = Guid.NewGuid().ToString(),
+        //     Values =
+        //     [
+        //         "a2", "b2", "c2"
+        //     ]
+        // });
+        //
+        // model.Rows.Add(new RowRecord
+        // {
+        //     Id = Guid.NewGuid().ToString(),
+        //     Values =
+        //     [
+        //         "a3", "b3", "c3"
+        //     ]
+        // });
+        //
+        //
+        // RowsView = CollectionViewSource.GetDefaultView(model.Rows);
+        // RowsView.Filter = obj => ((RowRecord)obj).IsVisible;
 
         // Синхронизация видимости колонок при изменении в Data
         // model.PropertyChanged += (s, e) =>
