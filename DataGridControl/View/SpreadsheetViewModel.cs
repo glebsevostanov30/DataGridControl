@@ -1,25 +1,18 @@
 ﻿using System.ComponentModel;
 using System.Data;
-using System.Windows.Data;
 using CommunityToolkit.Mvvm.Input;
 using DataGridControl.Command.Column;
 using DataGridControl.Command.Row;
 using DataGridControl.Dialog;
-using DataGridControl.Model.Test;
 using DataGridControl.Service;
 
 namespace DataGridControl.View;
 
 public partial class SpreadsheetViewModel
 {
-    public DynamicTable model { get; } = new();
     public VeiwModel veiw { get; } = new();
     private readonly CommandHistory _history = CommandHistory.instance;
     private readonly SelectionColumnsDialog _selectionColumnsDialog;
-
-    public ICollectionView RowsView { get; }
-    public IReadOnlyList<ColumnDescriptor> Columns => model.Columns;
-
     public SpreadsheetViewModel()
     {
         // for (int i = 0; i < 100; i++)
