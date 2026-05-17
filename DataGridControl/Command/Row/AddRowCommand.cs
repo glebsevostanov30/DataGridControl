@@ -4,17 +4,15 @@ using DataGridControl.View;
 namespace DataGridControl.Command.Row;
 
 public class AddRowCommand(
-    VeiwModel vm, 
-    // RowRecord row
-    DataRow row
-    )
+    ViewModel vm )
     : IUndoRedoCommand
 {
-    public string Description => $"Добавление строки в позицию {row}";
+    private DataRowView? _row;
+    public string Description => $"Добавление строки в позицию {_row}";
 
     public void Undo()
     {
-        // vm.Rows.Remove(row);
+        vm.RemoveRow(_row);
         // vm.DeleteRow(row.Id);
         // vm.IsUndoRedoInProgress = true;
         // vm.RemoveRow(_row);
@@ -23,7 +21,7 @@ public class AddRowCommand(
 
     public void Redo()
     {
-        vm.AddRow(vm.TableData, null);
+        vm.AddRow(null);
         // vm.IsUndoRedoInProgress = true;
         // vm.AddRow(row.Id, row.Values);
         // vm.IsUndoRedoInProgress = false;

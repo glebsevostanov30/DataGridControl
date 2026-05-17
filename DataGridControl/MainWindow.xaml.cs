@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Data;
+using System.Windows;
 using System.Windows.Media;
 using DataGridControl.View;
 
@@ -9,11 +10,12 @@ namespace DataGridControl;
 /// </summary>
 public partial class MainWindow : Window
 {
-    public MainWindow()     
+    public MainWindow()
     {
         InitializeComponent();
         var spreadsheetViewModel = new SpreadsheetViewModel();
         DataContext = spreadsheetViewModel;
+
     }
 
     private void ButtonBase_OnClick(object sender, RoutedEventArgs e)

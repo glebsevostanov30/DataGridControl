@@ -4,7 +4,7 @@ using DataGridControl.View;
 namespace DataGridControl.Command.Column;
 
 public class AddColumnCommand(
-    VeiwModel vm, 
+    ViewModel vm, 
     // DataTable vm,
     DataColumn column)
     : IUndoRedoCommand
@@ -22,8 +22,8 @@ public class AddColumnCommand(
 
     public void Redo()
     {
-        var asdf = vm.TableData.Copy();
-        vm.AddColumn<string>(column.ColumnName, asdf);
+        
+        vm.AddColumn<string>(column.ColumnName);
         // vm.Columns.Add(column);
         // vm.IsUndoRedoInProgress = true;
         // vm.AddColumn(column.Id, column.Header);

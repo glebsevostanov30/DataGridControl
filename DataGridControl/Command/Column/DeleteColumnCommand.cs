@@ -1,10 +1,11 @@
 ﻿// using System.Data;
 // using DataGridControl.Model;
+// using DataGridControl.View;
 //
 // namespace DataGridControl.Command.Column;
 //
 // public class DeleteColumnCommand(
-//     SpreadsheetModel vm,
+//     ViewModel vm,
 //     DataColumn dataColumn)
 //     : IUndoRedoCommand
 // {
@@ -12,6 +13,7 @@
 //
 //     public void Undo()
 //     {
+//         vm.AddColumn<>();
 //         // dataColumn.Visibility(Visibility.Hidden);
 //         // vm.IsUndoRedoInProgress = true;
 //         // vm.AddColumn(dataColumn);

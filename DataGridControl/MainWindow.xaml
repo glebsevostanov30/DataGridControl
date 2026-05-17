@@ -46,7 +46,7 @@
         </ToolBarTray>
         <Button DockPanel.Dock="Bottom" Click="ButtonBase_OnClick" Height="200" Width="200" />
         <DataGrid x:Name="MainDataGrid"
-                  ItemsSource="{Binding veiw.TableData.DefaultView}"
+                  ItemsSource="{Binding view.TableData.DefaultView}"
                   AutoGenerateColumns="True"
                   CanUserAddRows="False"
                   CanUserDeleteRows="False"
@@ -66,8 +66,8 @@
                     AccelerationIncrement="3.45"
                     AccelerationDecay="0.40"
                     />
-                <!-- <behaviors:DataGridSelectedItemsBehavior -->
-                <!-- SelectedRows="{Binding model.SelectedRows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" /> -->
+                <behaviors:DataGridSelectedItemsBehavior
+                SelectedRows="{Binding view.SelectedRows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <!-- <behaviors:DataGridCellsBehavior -->
                 <!--     Cells="{Binding model.Cells, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" /> -->
                 <!-- <behaviors:DataGridColumnsBehavior -->
