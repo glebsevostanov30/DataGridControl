@@ -6,10 +6,10 @@
         xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
         xmlns:view="clr-namespace:DataGridControl.View"
         xmlns:behaviors="clr-namespace:DataGridControl.Behaviors"
+        xmlns:dgx="clr-namespace:DataGridExtensions;assembly=DataGridExtensions"
         d:DataContext="{d:DesignInstance view:SpreadsheetViewModel}"
         mc:Ignorable="d"
-        Title="Spreadsheet with Undo/Redo" Width="1920" Height="720" 
-        >
+        Title="Spreadsheet with Undo/Redo" Width="1920" Height="720">
     <Window.InputBindings>
         <KeyBinding Key="N" Modifiers="Control"
                     Command="{Binding AddRowCommand}" />
@@ -46,7 +46,7 @@
         </ToolBarTray>
         <Button DockPanel.Dock="Bottom" Click="ButtonBase_OnClick" Height="200" Width="200" />
         <DataGrid x:Name="MainDataGrid"
-                  ItemsSource="{Binding view.TableData.DefaultView}"
+                  ItemsSource="{Binding view.TableData}"
                   AutoGenerateColumns="True"
                   CanUserAddRows="False"
                   CanUserDeleteRows="False"
@@ -64,16 +64,15 @@
                     UnitScrollRatio="0.09"
                     AccelerationThreshold="200"
                     AccelerationIncrement="3.45"
-                    AccelerationDecay="0.40"
-                    />
+                    AccelerationDecay="0.40" />
                 <behaviors:DataGridSelectedItemsBehavior
-                SelectedRows="{Binding view.SelectedRows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    SelectedRows="{Binding view.SelectedRows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <!-- <behaviors:DataGridCellsBehavior -->
                 <!--     Cells="{Binding model.Cells, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" /> -->
                 <!-- <behaviors:DataGridColumnsBehavior -->
                 <!-- ColumnsSource="{Binding model.Columns}"/> -->
             </i:Interaction.Behaviors>
-            
+
             <DataGrid.CellStyle>
                 <Style TargetType="DataGridCell">
                     <Setter Property="HorizontalContentAlignment" Value="Center" />
@@ -82,7 +81,7 @@
                         <Setter.Value>
                             <ControlTemplate TargetType="DataGridCell">
                                 <Grid Background="{TemplateBinding Background}">
-                                    <ContentPresenter 
+                                    <ContentPresenter
                                         HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                         VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                                 </Grid>
@@ -91,11 +90,14 @@
                     </Setter>
                 </Style>
             </DataGrid.CellStyle>
-            
+
+
             <DataGrid.ColumnHeaderStyle>
                 <Style TargetType="DataGridColumnHeader">
                     <Setter Property="HorizontalContentAlignment" Value="Center" />
                     <Setter Property="VerticalContentAlignment" Value="Center" />
+
+                    <Setter Property="behaviors:HeaderEditHelper.IsEditable" Value="True" />
                 </Style>
             </DataGrid.ColumnHeaderStyle>
         </DataGrid>

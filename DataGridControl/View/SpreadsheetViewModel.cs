@@ -13,13 +13,13 @@ public partial class SpreadsheetViewModel
     public ViewModel view { get; } = new();
     private readonly CommandHistory _history = CommandHistory.instance;
     private readonly SelectionColumnsDialog _selectionColumnsDialog;
-    
+    public event PropertyChangedEventHandler PropertyChanged;
+
+
     public SpreadsheetViewModel()
     {
         
     }
-
-    public event PropertyChangedEventHandler PropertyChanged;
 
 
     [RelayCommand]
@@ -44,14 +44,6 @@ public partial class SpreadsheetViewModel
     [RelayCommand]
     private void AddColumn()
     {
-        // var newColumn = new ColumnDescriptor
-        // {
-        //     Id = Guid.NewGuid().ToString(),
-        //     Header = "Новая колонка"
-        // };
-        //
-        // var command = new AddColumnCommand(model, newColumn);
-        // _history.Execute(command);
         var newColumn = new DataColumn(Guid.NewGuid().ToString());
         var command = new AddColumnCommand(view, newColumn);
         _history.Execute(command);
