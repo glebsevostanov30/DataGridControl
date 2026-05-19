@@ -2,13 +2,23 @@
 using System.ComponentModel;
 using System.Data;
 using System.Runtime.CompilerServices;
+using System.Windows.Controls;
 
 namespace DataGridControl.View;
 
 public class ViewModel: INotifyPropertyChanged
 {
-    public DataTable TableData { get; set; } = new();
+    public DataTable TableData
+    {
+        get;
+        set
+        {
+            field = value;
+            OnPropertyChanged();
+        }
+    } = new();
     public ObservableCollection<DataRowView> SelectedRows { get; set; } = new();
+    public ObservableCollection<DataGridCellInfo> SelectedCells { get; set; } = new();
 
     public ViewModel()
     {
@@ -23,7 +33,7 @@ public class ViewModel: INotifyPropertyChanged
         }
         
         
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 10_000; i++)
         {
             AddRow(i, "Me", "me@mail.com");    
         }
@@ -31,6 +41,15 @@ public class ViewModel: INotifyPropertyChanged
         TableData =  TableData.Copy();
         TableData.AcceptChanges();
     }
+
+    public void RenameColumn(string oldName, string newName)
+    {
+        var dataTableCopy = TableData.Copy();
+        dataTableCopy.Columns[oldName]?.ColumnName = newName;
+        TableData = dataTableCopy;
+        OnPropertyChanged(nameof(TableData));
+    }
+    
 
     public void AddColumn<TData>(string columnName, int columnIndex = -1)
     {
@@ -86,10 +105,12 @@ public class ViewModel: INotifyPropertyChanged
         OnPropertyChanged(nameof(TableData));
     }
     
-    public void RemoveColumn(DataColumn? dataColumn)
+    public void RemoveColumn(DataGridColumn? dataColumn)
     {
         if (dataColumn == null) return;
-        TableData.Columns.Remove(dataColumn);
+        var dataTableCopy = TableData.Copy();
+        dataTableCopy.Columns.Remove(dataColumn.Header.ToString() ?? string.Empty);
+        TableData = dataTableCopy;
         OnPropertyChanged(nameof(TableData));
     }
 
@@ -99,13 +120,5 @@ public class ViewModel: INotifyPropertyChanged
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
-    {
-        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
-        field = value;
-        OnPropertyChanged(propertyName);
-        return true;
     }
 }

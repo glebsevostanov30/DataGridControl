@@ -6,7 +6,7 @@ namespace DataGridControl.Command.Row;
 
 public class DeleteRowCommand(
     ViewModel vm,
-    DataRowView row
+    DataRowView? row
     )
     : IUndoRedoCommand
 {

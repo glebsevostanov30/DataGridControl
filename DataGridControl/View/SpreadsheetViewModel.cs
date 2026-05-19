@@ -27,6 +27,13 @@ public partial class SpreadsheetViewModel
     {
         var command = new AddRowCommand(view);
         _history.Execute(command);
+        
+    }
+
+    public void RenameColumn(string oldName, string newName)
+    {
+        var command = new RenameColumnCommand(view, oldName, newName);
+        _history.Execute(command);
     }
 
     [RelayCommand]
@@ -39,6 +46,18 @@ public partial class SpreadsheetViewModel
         
         _history.ExecuteGroup(commands, "Удаление нескольких строк");
         view.SelectedRows.Clear();
+    }
+    
+    [RelayCommand]
+    private void DeleteRowsByCell()
+    {
+        var selected = view.SelectedCells;
+        
+        if (selected.Count <= 0) return;
+        var commands = selected.Select(cell => new DeleteRowCommand(view, cell.Item as DataRowView));
+        
+        _history.ExecuteGroup(commands, "Удаление нескольких строк по ячейкам");
+        view.SelectedCells.Clear();
     }
 
     [RelayCommand]
@@ -61,8 +80,21 @@ public partial class SpreadsheetViewModel
     }
 
     [RelayCommand]
-    private void DeleteColumns()
+    private void DeleteColumn()
     {
+        
+    }
+    
+    [RelayCommand]
+    private void DeleteColumnByCell()
+    {
+        var selected = view.SelectedCells;
+        
+        if (selected.Count <= 0) return;
+        var commands = selected.Select(cell => new DeleteColumnCommand(view, cell.Column));
+        
+        _history.ExecuteGroup(commands, "Удаление нескольких строк по ячейкам");
+        view.SelectedCells.Clear();
     }
 
     [RelayCommand]

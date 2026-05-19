@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
+﻿using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Xaml.Behaviors;
@@ -36,7 +34,8 @@ public class DataGridCellsBehavior : Behavior<DataGrid>
 
     private void OnSourceCollectionChanged(object sender, SelectedCellsChangedEventArgs e)
     {
-        foreach (var item in e.RemovedCells) Cells?.Remove(item);
-        foreach (var item in e.AddedCells) Cells?.Add(item);
+        // Cells = AssociatedObject.SelectedCells;
+        // foreach (var item in e.RemovedCells) Cells?.Remove(item);
+        // foreach (var item in e.AddedCells) Cells?.Add(item);
     }
 }

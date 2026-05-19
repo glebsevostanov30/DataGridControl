@@ -10,6 +10,14 @@
         d:DataContext="{d:DesignInstance view:SpreadsheetViewModel}"
         mc:Ignorable="d"
         Title="Spreadsheet with Undo/Redo" Width="1920" Height="720">
+    <Window.Resources>
+        <ContextMenu x:Key="CellContextMenu">
+            <MenuItem Header="Удалить строку"
+                      Command="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.DeleteRowsByCellCommand}" />
+            <MenuItem Header="Удалить столбец"
+                      Command="{Binding DeleteColumnByCellCommand}" />
+        </ContextMenu>
+    </Window.Resources>
     <Window.InputBindings>
         <KeyBinding Key="N" Modifiers="Control"
                     Command="{Binding AddRowCommand}" />
@@ -32,7 +40,7 @@
             <ToolBar>
                 <Button Command="{Binding AddColumnCommand}" Content="Добавить столбец" />
                 <Separator />
-                <Button Command="{Binding DeleteColumnsCommand}" Content="Удалить столбец" />
+                <Button Command="{Binding DeleteColumnCommand}" Content="Удалить столбец" />
                 <Separator />
                 <Button Command="{Binding ChooseColumnCommand}" Content="Выбрать столбцы" />
             </ToolBar>
@@ -56,7 +64,11 @@
                   SelectionUnit="CellOrRowHeader"
                   MinColumnWidth="90"
                   MinRowHeight="35"
-                  RowHeight="35">
+                  RowHeight="35"
+                  VirtualizingPanel.IsVirtualizing="True"
+                  VirtualizingPanel.VirtualizationMode="Recycling"
+                  ScrollViewer.IsDeferredScrollingEnabled="True"
+                  >
             <i:Interaction.Behaviors>
                 <behaviors:SmoothScrollBehavior
                     BaseStepCount="5"
@@ -67,8 +79,8 @@
                     AccelerationDecay="0.40" />
                 <behaviors:DataGridSelectedItemsBehavior
                     SelectedRows="{Binding view.SelectedRows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                <!-- <behaviors:DataGridCellsBehavior -->
-                <!--     Cells="{Binding model.Cells, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" /> -->
+                <behaviors:DataGridCellsBehavior
+                    Cells="{Binding view.SelectedCells, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <!-- <behaviors:DataGridColumnsBehavior -->
                 <!-- ColumnsSource="{Binding model.Columns}"/> -->
             </i:Interaction.Behaviors>
@@ -88,6 +100,7 @@
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
+                    <Setter Property="ContextMenu" Value="{StaticResource CellContextMenu}" />
                 </Style>
             </DataGrid.CellStyle>
 
@@ -96,7 +109,6 @@
                 <Style TargetType="DataGridColumnHeader">
                     <Setter Property="HorizontalContentAlignment" Value="Center" />
                     <Setter Property="VerticalContentAlignment" Value="Center" />
-
                     <Setter Property="behaviors:HeaderEditHelper.IsEditable" Value="True" />
                 </Style>
             </DataGrid.ColumnHeaderStyle>

@@ -4,6 +4,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Threading;
+using DataGridControl.View;
 using Microsoft.Xaml.Behaviors;
 
 namespace DataGridControl.Behaviors;
@@ -74,12 +75,45 @@ public class InlineHeaderEditBehavior : Behavior<DataGridColumnHeader>
     private void CommitEdit()
     {
         if (AssociatedObject.Content is not TextBox tb) return;
-        
+
         var newName = tb.Text.Trim();
         if (!string.IsNullOrEmpty(newName))
             AssociatedObject.Column.Header = newName;
-        
+
+        var dataGrid = FindParent<DataGrid>(AssociatedObject);
+
+        if (dataGrid != null && AssociatedObject.Column != null)
+        {
+            
+            if (dataGrid.DataContext is SpreadsheetViewModel spreadsheetViewModel)
+            {
+                if (_originalContent == null || _originalText == null) return;
+                if (spreadsheetViewModel.view.TableData.Columns.Contains(newName))
+                {
+                    CancelEdit();
+                    MessageBox.Show($"Колонка с именем '{newName}' уже существует.", "Ошибка", MessageBoxButton.OK,
+                        MessageBoxImage.Error);
+                    return;
+                }
+                
+                spreadsheetViewModel.RenameColumn(_originalText, newName);
+            }
+            
+        }
+
         ResetEdit();
+    }
+
+    private static T? FindParent<T>(DependencyObject child) where T : DependencyObject
+    {
+        var parentObject = VisualTreeHelper.GetParent(child);
+
+        return parentObject switch
+        {
+            null => null,
+            T parent => parent,
+            _ => FindParent<T>(parentObject)
+        };
     }
 
     private void CancelEdit()
