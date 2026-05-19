@@ -10,13 +10,13 @@ public class DataGridCellsBehavior : Behavior<DataGrid>
     public static readonly DependencyProperty CellProperty =
         DependencyProperty.RegisterAttached(
             nameof(Cells),
-            typeof(ObservableCollection<DataGridCellInfo>),
+            typeof(IList<DataGridCellInfo>),
             typeof(DataGridCellsBehavior),
             new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
-    public ObservableCollection<DataGridCellInfo> Cells
+    public IList<DataGridCellInfo> Cells
     {
-        get => (ObservableCollection<DataGridCellInfo>)GetValue(CellProperty);
+        get => (IList<DataGridCellInfo>)GetValue(CellProperty);
         set => SetValue(CellProperty, value);
     }
 
@@ -34,7 +34,7 @@ public class DataGridCellsBehavior : Behavior<DataGrid>
 
     private void OnSourceCollectionChanged(object sender, SelectedCellsChangedEventArgs e)
     {
-        // Cells = AssociatedObject.SelectedCells;
+        Cells = AssociatedObject.SelectedCells;
         // foreach (var item in e.RemovedCells) Cells?.Remove(item);
         // foreach (var item in e.AddedCells) Cells?.Add(item);
     }

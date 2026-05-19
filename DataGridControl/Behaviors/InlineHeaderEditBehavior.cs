@@ -88,6 +88,7 @@ public class InlineHeaderEditBehavior : Behavior<DataGridColumnHeader>
             if (dataGrid.DataContext is SpreadsheetViewModel spreadsheetViewModel)
             {
                 if (_originalContent == null || _originalText == null) return;
+                if (_originalText.Equals(newName)) return;
                 if (spreadsheetViewModel.view.TableData.Columns.Contains(newName))
                 {
                     CancelEdit();

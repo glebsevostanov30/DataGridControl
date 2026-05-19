@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel;
 using System.Data;
 using CommunityToolkit.Mvvm.Input;
+using DataGridControl.Command;
 using DataGridControl.Command.Column;
 using DataGridControl.Command.Row;
 using DataGridControl.Dialog;
 using DataGridControl.Service;
+using Microsoft.VisualBasic;
 
 namespace DataGridControl.View;
 
@@ -18,7 +20,6 @@ public partial class SpreadsheetViewModel
 
     public SpreadsheetViewModel()
     {
-        
     }
 
 
@@ -27,7 +28,6 @@ public partial class SpreadsheetViewModel
     {
         var command = new AddRowCommand(view);
         _history.Execute(command);
-        
     }
 
     public void RenameColumn(string oldName, string newName)
@@ -40,24 +40,31 @@ public partial class SpreadsheetViewModel
     private void DeleteRows()
     {
         var selected = view.SelectedRows;
-        
+
         if (selected.Count <= 0) return;
-        var commands = selected.Select(row => new DeleteRowCommand(view, row));
-        
-        _history.ExecuteGroup(commands, "Удаление нескольких строк");
-        view.SelectedRows.Clear();
+
+        // var commands = new List<IUndoRedoCommand>();
+        // foreach (DataRowView row in selected)
+        // {
+        //     commands.Add(
+        //         new DeleteRowCommand(view, selected.GetEnumerator())
+        //     );
+        // }
+        // var commands = selected.Select(row => new DeleteRowCommand(view, row));
+        var asdf = new DeleteRowCommand(view, selected);
+        _history.Execute(asdf);
     }
-    
+
     [RelayCommand]
     private void DeleteRowsByCell()
     {
-        var selected = view.SelectedCells;
-        
-        if (selected.Count <= 0) return;
-        var commands = selected.Select(cell => new DeleteRowCommand(view, cell.Item as DataRowView));
-        
-        _history.ExecuteGroup(commands, "Удаление нескольких строк по ячейкам");
-        view.SelectedCells.Clear();
+        // var selected = view.SelectedCells;
+        //
+        // if (selected.Count <= 0) return;
+        // var commands = selected.Select(cell => new DeleteRowCommand(view, cell.Item as DataRowView));
+        //
+        // _history.ExecuteGroup(commands, "Удаление нескольких строк по ячейкам");
+        // view.SelectedCells.Clear();
     }
 
     [RelayCommand]
@@ -82,17 +89,16 @@ public partial class SpreadsheetViewModel
     [RelayCommand]
     private void DeleteColumn()
     {
-        
     }
-    
+
     [RelayCommand]
     private void DeleteColumnByCell()
     {
         var selected = view.SelectedCells;
-        
+
         if (selected.Count <= 0) return;
         var commands = selected.Select(cell => new DeleteColumnCommand(view, cell.Column));
-        
+
         _history.ExecuteGroup(commands, "Удаление нескольких строк по ячейкам");
         view.SelectedCells.Clear();
     }
