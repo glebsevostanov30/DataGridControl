@@ -228,28 +228,19 @@ namespace DataGridControl.Behaviors
         private void OnPreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
             e.Handled = true;
-
-            if (_isAnimating) return;
-    
+            
             // Расчёт ускорения
             var now = DateTime.Now;
             var deltaMs = (now - _lastWheelTime).TotalMilliseconds;
             _lastWheelTime = now;
-
-            if (deltaMs < VerticalAccelerationThreshold)
-            {
-                _stepVerticalMultiplier += VerticalAccelerationIncrement;
-                _stepVerticalMultiplier = Math.Min(_stepVerticalMultiplier, VerticalMaxStepCount);
-            }
-    
-            if (deltaMs < HorizontalAccelerationThreshold)
-            {
-                _stepHorizontalMultiplier += HorizontalAccelerationIncrement;
-                _stepHorizontalMultiplier = Math.Min(_stepHorizontalMultiplier, HorizontalMaxStepCount);
-            }
-    
+            
             if (Keyboard.Modifiers == ModifierKeys.Shift)
             {   
+                if (deltaMs < HorizontalAccelerationThreshold)
+                {
+                    _stepHorizontalMultiplier += HorizontalAccelerationIncrement;
+                    _stepHorizontalMultiplier = Math.Min(_stepHorizontalMultiplier, HorizontalMaxStepCount);
+                }
                 // === Горизонтальный скролл (Shift) ===
                 var unitHorizontalStep = _scrollViewer.ViewportWidth * HorizontalUnitScrollRatio;
                 var horizontalStep = unitHorizontalStep * _stepHorizontalMultiplier;
@@ -258,10 +249,17 @@ namespace DataGridControl.Behaviors
                 _targetHorizontalOffset = _currentHorizontalOffset + horizontalDelta;
                 _targetHorizontalOffset = Math.Max(0, Math.Min(_targetHorizontalOffset, _scrollViewer.ScrollableWidth));
         
+                if (_isAnimating) return;
                 _isAnimating = true;
                 CompositionTarget.Rendering += OnHorizontalRendering;
                 Debug.WriteLine($"🎯 Horizontal: target={_targetVerticalOffset:F1}, current={_currentVerticalOffset:F1}, stepMult={_stepVerticalMultiplier:F2}");
                 return;
+            }
+            
+            if (deltaMs < VerticalAccelerationThreshold)
+            {
+                _stepVerticalMultiplier += VerticalAccelerationIncrement;
+                _stepVerticalMultiplier = Math.Min(_stepVerticalMultiplier, VerticalMaxStepCount);
             }
     
             // === Вертикальный скролл (без Shift) ===
@@ -272,6 +270,7 @@ namespace DataGridControl.Behaviors
             _targetVerticalOffset = _currentVerticalOffset + verticalDelta;
             _targetVerticalOffset = Math.Max(0, Math.Min(_targetVerticalOffset, _scrollViewer.ScrollableHeight));
     
+            if (_isAnimating) return;
             _isAnimating = true;
             CompositionTarget.Rendering += OnVerticalRendering;
             Debug.WriteLine($"🎯 Vertical: target={_targetVerticalOffset:F1}, current={_currentVerticalOffset:F1}, stepMult={_stepVerticalMultiplier:F2}");
