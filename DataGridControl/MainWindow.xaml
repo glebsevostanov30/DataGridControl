@@ -65,18 +65,29 @@
                   MinColumnWidth="90"
                   MinRowHeight="35"
                   RowHeight="35"
+                  ScrollViewer.IsDeferredScrollingEnabled="False"
                   VirtualizingPanel.IsVirtualizing="True"
                   VirtualizingPanel.VirtualizationMode="Recycling"
-                  ScrollViewer.IsDeferredScrollingEnabled="True"
+                  VirtualizingPanel.IsContainerVirtualizable="True"
+                  VirtualizingPanel.ScrollUnit="Item"
+                  VirtualizingPanel.CacheLength="0"
                   >
             <i:Interaction.Behaviors>
                 <behaviors:SmoothScrollBehavior
-                    BaseStepCount="5"
-                    MaxStepCount="100"
-                    UnitScrollRatio="0.09"
-                    AccelerationThreshold="200"
-                    AccelerationIncrement="3.45"
-                    AccelerationDecay="0.40" />
+                    VerticalBaseStepCount="3"
+                    HorizontalBaseStepCount="1"
+                    VerticalMaxStepCount="150"          
+                    HorizontalMaxStepCount="7"
+                    VerticalUnitScrollRatio="0.17"    
+                    HorizontalUnitScrollRatio="0.01"
+                    VerticalAccelerationThreshold="150"
+                    HorizontalAccelerationThreshold="150"
+                    VerticalAccelerationIncrement="7"
+                    HorizontalAccelerationIncrement="0.5"
+                    VerticalAccelerationDecay="0.55" 
+                    HorizontalAccelerationDecay="0.95"
+                    VerticalAnimationSpeed="2.0"
+                    HorizontalAnimationSpeed="1" />
                 <behaviors:DataGridSelectedItemsBehavior
                     SelectedRows="{Binding view.SelectedRows, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <behaviors:DataGridCellsBehavior

@@ -11,88 +11,162 @@ namespace DataGridControl.Behaviors
     public class SmoothScrollBehavior : Behavior<DataGrid>
     {
         // === Регистрация зависимых свойств ===
-        
-        public static readonly DependencyProperty AnimationSpeedProperty =
-            DependencyProperty.Register(nameof(AnimationSpeed), typeof(double), typeof(SmoothScrollBehavior), 
+
+        public static readonly DependencyProperty VerticalAnimationSpeedProperty =
+            DependencyProperty.Register(nameof(VerticalAnimationSpeed), typeof(double), typeof(SmoothScrollBehavior),
                 new PropertyMetadata(8.0));
         
-        public static readonly DependencyProperty BaseStepCountProperty =
-            DependencyProperty.Register(nameof(BaseStepCount), typeof(int), typeof(SmoothScrollBehavior), 
+        public static readonly DependencyProperty HorizontalAnimationSpeedProperty =
+            DependencyProperty.Register(nameof(HorizontalAnimationSpeed), typeof(double), typeof(SmoothScrollBehavior),
+                new PropertyMetadata(8.0));
+
+        public static readonly DependencyProperty VerticalBaseStepCountProperty =
+            DependencyProperty.Register(nameof(VerticalBaseStepCount), typeof(int), typeof(SmoothScrollBehavior),
                 new PropertyMetadata(3));
         
-        public static readonly DependencyProperty MaxStepCountProperty =
-            DependencyProperty.Register(nameof(MaxStepCount), typeof(int), typeof(SmoothScrollBehavior), 
+        public static readonly DependencyProperty HorizontalBaseStepCountProperty =
+            DependencyProperty.Register(nameof(HorizontalBaseStepCount), typeof(int), typeof(SmoothScrollBehavior),
+                new PropertyMetadata(3));
+
+        public static readonly DependencyProperty VerticalMaxStepCountProperty =
+            DependencyProperty.Register(nameof(VerticalMaxStepCount), typeof(int), typeof(SmoothScrollBehavior),
                 new PropertyMetadata(50));
         
-        public static readonly DependencyProperty UnitScrollRatioProperty =
-            DependencyProperty.Register(nameof(UnitScrollRatio), typeof(double), typeof(SmoothScrollBehavior), 
+        public static readonly DependencyProperty HorizontalMaxStepCountProperty =
+            DependencyProperty.Register(nameof(HorizontalMaxStepCount), typeof(int), typeof(SmoothScrollBehavior),
+                new PropertyMetadata(50));
+
+        public static readonly DependencyProperty VerticalUnitScrollRatioProperty =
+            DependencyProperty.Register(nameof(VerticalUnitScrollRatio), typeof(double), typeof(SmoothScrollBehavior),
                 new PropertyMetadata(0.05));
         
-        public static readonly DependencyProperty AccelerationThresholdProperty =
-            DependencyProperty.Register(nameof(AccelerationThreshold), typeof(double), typeof(SmoothScrollBehavior), 
+        public static readonly DependencyProperty HorizontalUnitScrollRatioProperty =
+            DependencyProperty.Register(nameof(HorizontalUnitScrollRatio), typeof(double), typeof(SmoothScrollBehavior),
+                new PropertyMetadata(0.05));
+
+        public static readonly DependencyProperty VerticalAccelerationThresholdProperty =
+            DependencyProperty.Register(nameof(VerticalAccelerationThreshold), typeof(double), typeof(SmoothScrollBehavior),
                 new PropertyMetadata(200.0));
         
-        public static readonly DependencyProperty AccelerationIncrementProperty =
-            DependencyProperty.Register(nameof(AccelerationIncrement), typeof(double), typeof(SmoothScrollBehavior), 
+        public static readonly DependencyProperty HorizontalAccelerationThresholdProperty =
+            DependencyProperty.Register(nameof(HorizontalAccelerationThreshold), typeof(double), typeof(SmoothScrollBehavior),
+                new PropertyMetadata(200.0));
+
+        public static readonly DependencyProperty VerticalAccelerationIncrementProperty =
+            DependencyProperty.Register(nameof(VerticalAccelerationIncrement), typeof(double), typeof(SmoothScrollBehavior),
                 new PropertyMetadata(2.0));
         
-        public static readonly DependencyProperty AccelerationDecayProperty =
-            DependencyProperty.Register(nameof(AccelerationDecay), typeof(double), typeof(SmoothScrollBehavior), 
+        public static readonly DependencyProperty HorizontalAccelerationIncrementProperty =
+            DependencyProperty.Register(nameof(HorizontalAccelerationIncrement), typeof(double), typeof(SmoothScrollBehavior),
+                new PropertyMetadata(2.0));
+
+        public static readonly DependencyProperty VerticalAccelerationDecayProperty =
+            DependencyProperty.Register(nameof(VerticalAccelerationDecay), typeof(double), typeof(SmoothScrollBehavior),
+                new PropertyMetadata(0.96));
+
+        public static readonly DependencyProperty HorizontalAccelerationDecayProperty =
+            DependencyProperty.Register(nameof(HorizontalAccelerationDecay), typeof(double), typeof(SmoothScrollBehavior),
                 new PropertyMetadata(0.96));
 
         // === CLR-обёртки для доступа к свойствам ===
-        
-        public double AnimationSpeed
+        public double VerticalAnimationSpeed
         {
-            get => (double)GetValue(AnimationSpeedProperty);
-            set => SetValue(AnimationSpeedProperty, value);
+            get => (double)GetValue(VerticalAnimationSpeedProperty);
+            set => SetValue(VerticalAnimationSpeedProperty, value);
         }
         
-        public int BaseStepCount
+        public double HorizontalAnimationSpeed
         {
-            get => (int)GetValue(BaseStepCountProperty);
-            set => SetValue(BaseStepCountProperty, value);
+            get => (double)GetValue(HorizontalAnimationSpeedProperty);
+            set => SetValue(HorizontalAnimationSpeedProperty, value);
+        }
+
+        public int VerticalBaseStepCount
+        {
+            get => (int)GetValue(VerticalBaseStepCountProperty);
+            set => SetValue(VerticalBaseStepCountProperty, value);
         }
         
-        public int MaxStepCount
+        public int HorizontalBaseStepCount
         {
-            get => (int)GetValue(MaxStepCountProperty);
-            set => SetValue(MaxStepCountProperty, value);
+            get => (int)GetValue(HorizontalBaseStepCountProperty);
+            set => SetValue(HorizontalBaseStepCountProperty, value);
+        }
+
+        public int VerticalMaxStepCount
+        {
+            get => (int)GetValue(VerticalMaxStepCountProperty);
+            set => SetValue(VerticalMaxStepCountProperty, value);
         }
         
-        public double UnitScrollRatio
+        public int HorizontalMaxStepCount
         {
-            get => (double)GetValue(UnitScrollRatioProperty);
-            set => SetValue(UnitScrollRatioProperty, value);
+            get => (int)GetValue(HorizontalMaxStepCountProperty);
+            set => SetValue(HorizontalMaxStepCountProperty, value);
+        }
+
+        public double VerticalUnitScrollRatio
+        {
+            get => (double)GetValue(VerticalUnitScrollRatioProperty);
+            set => SetValue(VerticalUnitScrollRatioProperty, value);
         }
         
-        public double AccelerationThreshold
+        public double HorizontalUnitScrollRatio
         {
-            get => (double)GetValue(AccelerationThresholdProperty);
-            set => SetValue(AccelerationThresholdProperty, value);
+            get => (double)GetValue(HorizontalUnitScrollRatioProperty);
+            set => SetValue(HorizontalUnitScrollRatioProperty, value);
+        }
+
+        public double VerticalAccelerationThreshold
+        {
+            get => (double)GetValue(VerticalAccelerationThresholdProperty);
+            set => SetValue(VerticalAccelerationThresholdProperty, value);
         }
         
-        public double AccelerationIncrement
+        public double HorizontalAccelerationThreshold
         {
-            get => (double)GetValue(AccelerationIncrementProperty);
-            set => SetValue(AccelerationIncrementProperty, value);
+            get => (double)GetValue(HorizontalAccelerationThresholdProperty);
+            set => SetValue(HorizontalAccelerationThresholdProperty, value);
+        }
+
+        public double VerticalAccelerationIncrement
+        {
+            get => (double)GetValue(VerticalAccelerationIncrementProperty);
+            set => SetValue(VerticalAccelerationIncrementProperty, value);
+        }
+
+        public double HorizontalAccelerationIncrement
+        {
+            get => (double)GetValue(HorizontalAccelerationIncrementProperty);
+            set => SetValue(HorizontalAccelerationIncrementProperty, value);
+        }
+
+        public double VerticalAccelerationDecay
+        {
+            get => (double)GetValue(VerticalAccelerationDecayProperty);
+            set => SetValue(VerticalAccelerationDecayProperty, value);
         }
         
-        public double AccelerationDecay
+        public double HorizontalAccelerationDecay
         {
-            get => (double)GetValue(AccelerationDecayProperty);
-            set => SetValue(AccelerationDecayProperty, value);
+            get => (double)GetValue(HorizontalAccelerationDecayProperty);
+            set => SetValue(HorizontalAccelerationDecayProperty, value);
         }
 
         // === Внутреннее состояние ===
-        private ScrollViewer? _scrollViewer;
-        private double _currentOffset;
-        private double _targetOffset;
+        private ScrollViewer _scrollViewer;
+        private double _currentVerticalOffset;
+        private double _targetVerticalOffset;
         private bool _isAnimating;
-        
+
+        // === Внутреннее состояние ===
+        private double _currentHorizontalOffset;
+        private double _targetHorizontalOffset;
+
         private DateTime _lastWheelTime;
-        private double _stepMultiplier;
-        private DispatcherTimer? _decayTimer;
+        private double _stepVerticalMultiplier;
+        private double _stepHorizontalMultiplier;
+        private readonly DispatcherTimer _verticalDecayTimer = new() { Interval = TimeSpan.FromMilliseconds(450) };
 
         protected override void OnAttached()
         {
@@ -103,105 +177,130 @@ namespace DataGridControl.Behaviors
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            _scrollViewer = FindScrollViewer(AssociatedObject);
-            if (_scrollViewer == null) return;
-            
+            var scrollViewer = FindScrollViewer(AssociatedObject);
+            _scrollViewer = scrollViewer ?? throw new Exception("Could not find ScrollViewer for parent");
+
             AssociatedObject.PreviewMouseWheel += OnPreviewMouseWheel;
             AssociatedObject.MouseWheel += OnMouseWheelSuppress;
             _scrollViewer.ScrollChanged += OnScrollChanged;
-            
-            _stepMultiplier = BaseStepCount;
+
+            _stepVerticalMultiplier = VerticalBaseStepCount;
+            _stepHorizontalMultiplier = HorizontalBaseStepCount;
             _lastWheelTime = DateTime.MinValue;
-            
-            _decayTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(350) };
-            _decayTimer.Tick += OnDecayTimerTick;
-            _decayTimer.Start();
+
+            _verticalDecayTimer.Tick += OnVerticalDecayTimerTick;
+            _verticalDecayTimer.Start();
         }
 
         private void OnUnloaded(object sender, RoutedEventArgs e)
         {
-            if (_scrollViewer == null) return;
-            
             AssociatedObject.PreviewMouseWheel -= OnPreviewMouseWheel;
             AssociatedObject.MouseWheel -= OnMouseWheelSuppress;
             _scrollViewer.ScrollChanged -= OnScrollChanged;
-            
-            _decayTimer?.Stop();
-            _decayTimer = null;
-            
-            if (_isAnimating)
-            {
-                CompositionTarget.Rendering -= OnRendering;
-                _isAnimating = false;
-            }
+
+            _verticalDecayTimer.Stop();
+
+            if (!_isAnimating) return;
+            CompositionTarget.Rendering -= OnHorizontalRendering;
+            CompositionTarget.Rendering -= OnVerticalRendering;
+            _isAnimating = false;
         }
 
-        private void OnDecayTimerTick(object? sender, EventArgs e)
+        private void OnVerticalDecayTimerTick(object? sender, EventArgs e)
         {
-            if (_stepMultiplier > BaseStepCount)
-            {
-                _stepMultiplier *= AccelerationDecay;
-                if (_stepMultiplier < BaseStepCount + 0.1)
-                    _stepMultiplier = BaseStepCount;
-            }
+            if (!(_stepVerticalMultiplier > VerticalBaseStepCount)) return;
+
+            _stepVerticalMultiplier *= VerticalAccelerationDecay;
+            if (_stepVerticalMultiplier < VerticalBaseStepCount + 0.1)
+                _stepVerticalMultiplier = VerticalBaseStepCount;
         }
 
         private void OnScrollChanged(object sender, ScrollChangedEventArgs e)
         {
-            if (_isAnimating || _scrollViewer == null) return;
-            _currentOffset = _scrollViewer.VerticalOffset;
-            _targetOffset = _currentOffset;
+            if (_isAnimating) return;
+            _currentVerticalOffset = _scrollViewer.VerticalOffset;
+            _targetVerticalOffset = _currentVerticalOffset;
+            
+            _currentHorizontalOffset = _scrollViewer.HorizontalOffset;
+            _targetHorizontalOffset = _currentHorizontalOffset;
         }
 
         private void OnPreviewMouseWheel(object sender, MouseWheelEventArgs e)
         {
-            if (_scrollViewer == null) return;
             e.Handled = true;
 
+            if (_isAnimating) return;
+    
             // Расчёт ускорения
             var now = DateTime.Now;
             var deltaMs = (now - _lastWheelTime).TotalMilliseconds;
             _lastWheelTime = now;
 
-            if (deltaMs < AccelerationThreshold)
+            if (deltaMs < VerticalAccelerationThreshold)
             {
-                _stepMultiplier += AccelerationIncrement;
-                _stepMultiplier = Math.Min(_stepMultiplier, MaxStepCount);
+                _stepVerticalMultiplier += VerticalAccelerationIncrement;
+                _stepVerticalMultiplier = Math.Min(_stepVerticalMultiplier, VerticalMaxStepCount);
             }
-
-            // Расчёт шага
-            var unitStep = _scrollViewer.ViewportHeight * UnitScrollRatio;
-            var step = unitStep * _stepMultiplier;
-            var delta = (e.Delta > 0) ? -step : step;
-
-            _targetOffset = _currentOffset + delta;
-            _targetOffset = Math.Max(0, Math.Min(_targetOffset, _scrollViewer.ScrollableHeight));
-
-            if (!_isAnimating)
+    
+            if (deltaMs < HorizontalAccelerationThreshold)
             {
+                _stepHorizontalMultiplier += HorizontalAccelerationIncrement;
+                _stepHorizontalMultiplier = Math.Min(_stepHorizontalMultiplier, HorizontalMaxStepCount);
+            }
+    
+            if (Keyboard.Modifiers == ModifierKeys.Shift)
+            {   
+                // === Горизонтальный скролл (Shift) ===
+                var unitHorizontalStep = _scrollViewer.ViewportWidth * HorizontalUnitScrollRatio;
+                var horizontalStep = unitHorizontalStep * _stepHorizontalMultiplier;
+                var horizontalDelta = (e.Delta > 0) ? -horizontalStep : horizontalStep;
+
+                _targetHorizontalOffset = _currentHorizontalOffset + horizontalDelta;
+                _targetHorizontalOffset = Math.Max(0, Math.Min(_targetHorizontalOffset, _scrollViewer.ScrollableWidth));
+        
                 _isAnimating = true;
-                CompositionTarget.Rendering += OnRendering;
+                CompositionTarget.Rendering += OnHorizontalRendering;
+                Debug.WriteLine($"🎯 Horizontal: target={_targetVerticalOffset:F1}, current={_currentVerticalOffset:F1}, stepMult={_stepVerticalMultiplier:F2}");
+                return;
             }
-            
-            Debug.WriteLine(
-                $"[Scroll] MultiplierF1: {_stepMultiplier:F1}, MultiplierF2: {_stepMultiplier:F2}, Step: {step:F0}px");
+    
+            // === Вертикальный скролл (без Shift) ===
+            var unitVerticalStep = _scrollViewer.ViewportHeight * VerticalUnitScrollRatio;
+            var verticalStep = unitVerticalStep * _stepVerticalMultiplier;
+            var verticalDelta = (e.Delta > 0) ? -verticalStep : verticalStep;
+
+            _targetVerticalOffset = _currentVerticalOffset + verticalDelta;
+            _targetVerticalOffset = Math.Max(0, Math.Min(_targetVerticalOffset, _scrollViewer.ScrollableHeight));
+    
+            _isAnimating = true;
+            CompositionTarget.Rendering += OnVerticalRendering;
+            Debug.WriteLine($"🎯 Vertical: target={_targetVerticalOffset:F1}, current={_currentVerticalOffset:F1}, stepMult={_stepVerticalMultiplier:F2}");
         }
 
-        private void OnRendering(object? sender, EventArgs e)
+        private void OnHorizontalRendering(object? sender, EventArgs e)
         {
-            if (_scrollViewer == null) return;
+            _currentHorizontalOffset += (_targetHorizontalOffset - _currentHorizontalOffset) / HorizontalAnimationSpeed;
+            _scrollViewer.ScrollToHorizontalOffset(_currentHorizontalOffset);
 
-            _currentOffset += (_targetOffset - _currentOffset) / AnimationSpeed;
-            _scrollViewer.ScrollToVerticalOffset(_currentOffset);
+            if (!(Math.Abs(_targetHorizontalOffset - _currentHorizontalOffset) < 0.5)) return;
+            _currentHorizontalOffset = _targetHorizontalOffset;
+            _scrollViewer.ScrollToHorizontalOffset(_currentHorizontalOffset);
 
-            if (Math.Abs(_targetOffset - _currentOffset) < 0.5)
-            {
-                _currentOffset = _targetOffset;
-                _scrollViewer.ScrollToVerticalOffset(_currentOffset);
-                
-                CompositionTarget.Rendering -= OnRendering;
-                _isAnimating = false;
-            }
+            CompositionTarget.Rendering -= OnHorizontalRendering;
+            _isAnimating = false;
+        }
+        
+        private void OnVerticalRendering(object? sender, EventArgs e)
+        {
+            _currentVerticalOffset += (_targetVerticalOffset - _currentVerticalOffset) / VerticalAnimationSpeed;
+            _scrollViewer.ScrollToVerticalOffset(_currentVerticalOffset);
+
+            if (!(Math.Abs(_targetVerticalOffset - _currentVerticalOffset) < 0.5)) return;
+            _currentVerticalOffset = _targetVerticalOffset;
+            _scrollViewer.ScrollToVerticalOffset(_currentVerticalOffset);
+
+            CompositionTarget.Rendering -= OnVerticalRendering;
+            _isAnimating = false;
         }
 
         private static void OnMouseWheelSuppress(object sender, MouseWheelEventArgs e) => e.Handled = true;
@@ -209,11 +308,13 @@ namespace DataGridControl.Behaviors
         private static ScrollViewer? FindScrollViewer(DependencyObject parent)
         {
             if (parent is ScrollViewer viewer) return viewer;
+    
             for (var i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
             {
                 var child = VisualTreeHelper.GetChild(parent, i);
                 var result = FindScrollViewer(child);
-                if (result != null) return result;
+                if (result != null)
+                    return result;
             }
             return null;
         }
